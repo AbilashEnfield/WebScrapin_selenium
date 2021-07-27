@@ -1,11 +1,15 @@
+""" Selenium for automating the dynamic contents in instagram"""
 from selenium import webdriver
 import time
 import urllib.request
 
+""" An chrome instance is created """
 driver = webdriver.Chrome()
+
+""" Instagram page  is opened """
 driver.get("https://www.instagram.com/salesapp.ca/")
 
-"""scroll to the bottom of the page"""
+"""scroll to the bottom of the page because instagram loads contents dynamically """
 lenOfPage = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
 match = False
 while not match:
@@ -16,6 +20,8 @@ while not match:
         match = True
 
 posts = []
+
+""" Each link with a tag is captured """
 links = driver.find_elements_by_tag_name('a')
 
 for link in links:
@@ -25,6 +31,7 @@ for link in links:
 
 download_url = ''
 
+""" Here we check the property of the file obtained from the link using the meta tag"""
 for post in posts:
     driver.get(post)
     shortcode = driver.current_url.split('/')[-2]
